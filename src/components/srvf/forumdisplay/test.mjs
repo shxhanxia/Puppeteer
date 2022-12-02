@@ -3,15 +3,7 @@ import srvfForumdisplay from './index.mjs';
 
 // 创建浏览器上下文
 launch({
-    devtools: true,
-    args: [
-        '--disable-gpu',
-        '--disable-dev-shm-usage',
-        '--disable-setuid-sandbox',
-        '--no-first-run',
-        '--no-zygote',
-        '--no-sandbox'
-    ]
+    defaultViewport: { width: 1920, height: 1080 }, headless: false,
 }).then(async browser => {
     const page = await browser.newPage();
 

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { sleep } from '../../utils.mjs';
 
 export default async (page, browser) => {
@@ -19,6 +20,13 @@ export default async (page, browser) => {
 
     // 等待沾一沾完成
     await dip(page);
+
+    // 任务完成, 发送模板消息
+    await axios.post('https://zhouwankai.com/weixin/wxid_drm2upjugdzm21/sendMessage.php', {
+        template_id: 'FWztbQIUI3NRMKuB2A26MHkklZGWMvf_vPtfYBjDLz4',
+    }).catch(error => {
+        console.error(error)
+    })
 
 }
 

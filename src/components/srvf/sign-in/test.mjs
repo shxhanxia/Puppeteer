@@ -2,7 +2,7 @@ import { launch } from 'puppeteer';
 import srvfSignIn from './index.mjs';
 
 // 创建浏览器上下文
-launch({ devtools: true }).then(async browser => {
+launch({ defaultViewport: { width: 1920, height: 1080 }, headless: false, }).then(async browser => {
     const page = await browser.newPage();
 
     // 设置页面各种等待时间, 不限时
