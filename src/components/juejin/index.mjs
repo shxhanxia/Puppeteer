@@ -135,7 +135,9 @@ const captchaPass = async (page, browser) => new Promise(async resolve => {
         // 滑动滑块儿
         await page.mouse.move(dragEle.x, dragEle.y);
         await page.mouse.down();
+        await page.mouse.move(dragEle.x + resultDistance / 3 * 2, dragEle.y, { steps: 30 });
         await page.mouse.move(dragEle.x + resultDistance, dragEle.y, { steps: 30 });
+        await sleep();
         await page.mouse.up();
         console.log('滑动滑块儿结束');
 
