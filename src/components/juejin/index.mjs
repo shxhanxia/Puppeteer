@@ -1,7 +1,18 @@
 import axios from 'axios';
+import dayjs from 'dayjs';
 import { sleep } from '../../utils.mjs';
 
 export default async (page, browser) => {
+    // 先去请求上次完成登录的日期
+    const { data: date } = await axios.get('https://zhouwankai.com/weixin/wxid_drm2upjugdzm21/juejin/getLoginDate.php').catch(error => {
+        console.error(error)
+    })
+    if (dayjs().format('YYYY-MM-DD') === date) {
+        // 今天已经登录过了
+        console.log('今天已经登录过了');
+        return;
+    }
+
     // 打开掘金页面
     console.log('准备打开掘金页面');
     await page.goto('https://juejin.cn');
@@ -21,11 +32,18 @@ export default async (page, browser) => {
     // 等待沾一沾完成
     await dip(page);
 
+    // 任务完成, 变更数据库记录的日期信息
+    await axios.post('https://zhouwankai.com/weixin/wxid_drm2upjugdzm21/juejin/setLoginDate.php', {
+        value: dayjs().format('YYYY-MM-DD')
+    }).catch(error => {
+        console.error(error);
+    })
+
     // 任务完成, 发送模板消息
     await axios.post('https://zhouwankai.com/weixin/wxid_drm2upjugdzm21/sendMessage.php', {
-        template_id: 'FWztbQIUI3NRMKuB2A26MHkklZGWMvf_vPtfYBjDLz4',
+        template_id: 'FWztbQIUI3NRMKuB2A26MHkklZGWMvf_vPtfYBjDLz4'
     }).catch(error => {
-        console.error(error)
+        console.error(error);
     })
 
 }
